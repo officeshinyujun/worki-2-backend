@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import { config } from "./config.js";   // config import
 import commentRoutes from "./routes/commentRoutes.js";
+import setupSwagger from "./config/swagger.js";
 
 const app = express();
 
@@ -12,6 +13,9 @@ app.use(express.json());
 
 // Routes
 app.use("/api/comments", commentRoutes);
+
+// Swagger Documentation
+setupSwagger(app);
 
 app.get("/", (req, res) => {
   return res.json({ message: "Hello World" });

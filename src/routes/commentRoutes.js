@@ -5,8 +5,28 @@ const router = express.Router();
 
 
 /**
- * @route   POST /api/comments
- * @desc    댓글 작성
+ * @swagger
+ * /api/comments:
+ *   post:
+ *     summary: Create a new comment
+ *     tags: [Comments]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Comment'
+ *     responses:
+ *       201:
+ *         description: The created comment
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Comment'
+ *       400:
+ *         description: Missing required fields
+ *       500:
+ *         description: Server error
  */
 router.post("/", async (req, res) => {
   try {
@@ -26,8 +46,29 @@ router.post("/", async (req, res) => {
 });
 
 /**
- * @route   GET /api/comments/:postName
- * @desc    특정 게시물의 댓글 불러오기
+ * @swagger
+ * /api/comments/{postName}:
+ *   get:
+ *     summary: Get all comments for a specific post
+ *     tags: [Comments]
+ *     parameters:
+ *       - in: path
+ *         name: postName
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The post identifier
+ *     responses:
+ *       200:
+ *         description: List of comments
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Comment'
+ *       500:
+ *         description: Server error
  */
 router.get("/:postName", async (req, res) => {
   try {
@@ -37,5 +78,7 @@ router.get("/:postName", async (req, res) => {
     res.status(500).json({ error: "댓글 불러오기 실패", details: err.message });
   }
 });
+
+
 
 export default router;
